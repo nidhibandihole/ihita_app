@@ -1,0 +1,66 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+ENV/
+env/
+.venv/
+
+# Flask instance folder and config
+instance/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Flask cache and logs
+*.log
+*.pot
+*.mo
+
+# Pytest and coverage
+.cache/
+.coverage
+coverage.xml
+*.cover
+htmlcov/
+.pytest_cache/
+
+# MySQL / SQLite database files
+*.db
+*.sqlite
+
+# VSCode
+.vscode/
+
+# PyCharm
+.idea/
+
+# Mac and Linux
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Flask Migrations
+migrations/
+
+# Compiled files
+build/
+dist/
+*.egg-info/
+
+# Uploaded/media files
+uploads/
+static/uploads/

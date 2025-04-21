@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Contact</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 80px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        form label {
+            display: block;
+            margin-top: 15px;
+            color: #34495e;
+        }
+
+        input[type="text"], input[type="tel"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2980b9;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <h2>Edit Contact</h2>
+        <form action="{{ url_for('edit_contact', contact_id=contact.id) }}" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" value="{{ contact.name }}" >
+
+            <label for="role">Role / Designation:</label>
+            <input type="text" name="role" id="role" value="{{ contact.role }}" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" name="phone" id="phone" value="{{ contact.phone }}" required>
+
+            <label for="email">Email (optional):</label>
+            <input type="email" name="email" id="email" value="{{ contact.email or '' }}">
+
+            <button type="submit">Update Contact</button>
+        </form>
+
+        <a href="{{ url_for('important_contacts') }}" class="back-link">← Back to Contacts</a>
+    </div>
+</body>
+</html>

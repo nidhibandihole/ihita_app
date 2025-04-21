@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Important Contact Details</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 80px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            color: #1abc9c;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        .contact-item {
+            margin: 10px 0;
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #34495e;
+        }
+
+        .value {
+            margin-left: 10px;
+            color: #555;
+        }
+
+        .actions {
+            margin-top: 8px;
+        }
+
+        .actions form {
+            display: inline;
+        }
+
+        .actions button {
+            padding: 6px 12px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+
+        .edit-btn {
+            background-color: #ffb347;
+            color: #000;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        /* Flash message styling */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+
+        .flash {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .flash.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .flash.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .flash.warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .flash.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <h1>Important Contact Details</h1>
+
+        {% for contact in contacts %}
+        <div class="section">
+            <h2>{{ contact.role }}: {{ contact.name }}</h2>
+            <div class="contact-item">
+                <span class="label">Phone:</span><span class="value">{{ contact.phone }}</span>
+            </div>
+            {% if is_admin %}
+            <div class="actions">
+                <form method="GET" action="{{ url_for('edit_contact', contact_id=contact.id) }}">
+                    <button type="submit" class="edit-btn">Edit</button>
+                </form>
+                <form method="POST" action="{{ url_for('delete_contact', contact_id=contact.id) }}">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        {% if is_admin %}
+        <div style="text-align:center; margin-top: 30px;">
+            <a href="{{ url_for('add_contact') }}" style="text-decoration:none; background-color:#1abc9c; color:white; padding:10px 20px; border-radius:8px;">Add New Contact</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

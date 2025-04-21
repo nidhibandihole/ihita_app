@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Moving Details</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f4f8;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f4f8;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-edit {
+            background-color: #ffb347;
+            color: white;
+            margin-right: 5px;
+        }
+
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .add-btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 20px;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        .add-btn:hover {
+            background-color: #1abc9c;
+        }
+
+        .alert {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            background-color: #ffdddd;
+            color: #333;
+            border: 1px solid #f5c6cb;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="form-container">
+        <h1>Moving Details</h1>
+        <a href="{{ url_for('move_details_form') }}" class="btn add-btn">ADD MOVING DETAILS</a>
+
+        {% if moving_details %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Apartment Number</th>
+                    <th>Move Type</th>
+                    <th>Move Date</th>
+                    <th>Dues Clearance</th>
+                    <th>Comments</th>
+                    <th>Logged At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for detail in moving_details %}
+                <tr>
+                    <td>{{ detail.apartment_number }}</td>
+                    <td>{{ detail.move_type }}</td>
+                    <td>{{ detail.moving_date.strftime('%d-%m-%Y') }}</td>
+                    <td>{{ detail.dues_clear }}</td>
+                    <td>{{ detail.comments or 'N/A' }}</td>
+                    <td>{{ detail.timestamp.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                    <td>
+                        {% if detail.apartment_number == session['apartment_number'] %}
+                            <a href="{{ url_for('edit_moving_details', announcement_id=detail.id) }}" class="btn btn-edit">Edit</a>
+                            <a href="{{ url_for('delete_moving_details', announcement_id=detail.id) }}" class="btn btn-delete">Delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No moving details logged yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

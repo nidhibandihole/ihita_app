@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ 'Edit Moving Details' if moving_detail else 'Add Moving Details' }}</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f4f8;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .radio-group label {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .radio-group input {
+            margin-right: 8px;
+            transform: scale(1.2);
+        }
+
+        .radio-group label:hover {
+            background-color: #ecf0f1;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #2c3e50;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1abc9c;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="form-container">
+        <h1>{{ 'Edit Moving Details' if moving_detail else 'Add Moving Details' }}</h1>
+
+        <form method="POST">
+            <label>Move Type:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="move_type" value="Moving In" {% if moving_detail and moving_detail.move_type == 'Moving In' %}checked{% endif %} required> Moving In</label>
+                <label><input type="radio" name="move_type" value="Moving Out" {% if moving_detail and moving_detail.move_type == 'Moving Out' %}checked{% endif %}> Moving Out</label>
+            </div>
+
+            <label for="moving_date">Move Date:</label>
+            <input type="date" id="moving_date" name="moving_date" value="{{ moving_detail.moving_date.strftime('%Y-%m-%d') if moving_detail else '' }}" required>
+
+            <label>Dues Clearance:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="dues_clear" value="Cleared" {% if moving_detail and moving_detail.dues_clear == 'Cleared' %}checked{% endif %} required> Cleared</label>
+                <label><input type="radio" name="dues_clear" value="Pending" {% if moving_detail and moving_detail.dues_clear == 'Pending' %}checked{% endif %}> Pending</label>
+            </div>
+
+            <label for="comments">Additional Comments (optional):</label>
+            <textarea id="comments" name="comments" rows="3">{{ moving_detail.comments if moving_detail else '' }}</textarea>
+
+            <button type="submit">{{ 'Update' if moving_detail else 'Add' }} Details</button>
+        </form>
+    </div>
+</body>
+</html>

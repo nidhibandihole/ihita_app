@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Party Hall Booking - Ihita South Avenue Association</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .radio-group {
+            margin: 10px 0;
+        }
+
+        .radio-group input {
+            margin-right: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .booking-log {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #e0f7fa;
+        }
+
+        .flash-messages ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            color: red;
+        }
+
+        .flash-messages ul li {
+            background-color: #ffdddd;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        <h1>Party Hall Booking</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Booking Form -->
+        <form method="POST">
+            <label for="date">Booking Date:</label>
+            <input type="date" id="date" name="date" required>
+            <label>Time Slot:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="slot" value="First Half" required> First Half</label>
+                <label><input type="radio" name="slot" value="Second Half" required> Second Half</label>
+                <label><input type="radio" name="slot" value="Full Day" required> Full Day</label>
+            </div>
+
+            <label>Payment Made via NBH:</label>
+            <div class="radio-group">
+                <label><input type="radio" name="payment" value="yes" required> Yes</label>
+                <label><input type="radio" name="payment" value="no"> No</label>
+            </div>
+
+            <label for="comments">Additional Comments (optional):</label>
+            <textarea id="comments" name="comments" rows="3"></textarea>
+
+            <button type="submit">SUBMIT</button>
+        </form>
+
+        <!-- Booking Log Display -->
+        <div class="booking-log">
+            <h2>Booking Log</h2>
+            {% if bookings %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Apartment</th>
+                            <th>Date</th>
+                            <th>Slot</th>
+                            <th>Comments</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in bookings %}
+                            <tr>
+                                <td>{{ b.apartment_number }}</td>
+                                <td>{{ b.date.strftime('%d-%b-%Y') }}</td>
+                                <td>{{ b.slot }}</td>
+                                <td>{{ b.comments or '—' }}</td>
+                                <td>
+                                    <!-- Display Update and Delete buttons only for the user's own booking -->
+                                    {% if b.apartment_number == session['apartment_number'] %}
+                                        <!-- Update button -->
+                                        <form method="GET" action="{{ url_for('edit_booking_route', booking_id=b.id) }}" style="display:inline;">
+                                            <button type="submit" style="background-color: #ffb347;">Update</button>
+                                        </form>
+
+                                        <!-- Delete button -->
+                                        <form method="POST" action="{{ url_for('delete_booking_route', booking_id=b.id) }}" style="display:inline;">
+                                            <button type="submit" style="background-color: #f44336;">Delete</button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No bookings yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

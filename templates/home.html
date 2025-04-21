@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home - Ihita South Avenue Association</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        .container {
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* Announcements container */
+        .announcements-container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            max-height: 400px;
+            overflow-y: auto;
+            text-align: left;
+        }
+
+        .announcement {
+            background-color: #e1f5fe;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .announcement img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            display: block;
+        }
+
+        .image-container {
+            margin-top: 10px;
+        }
+
+        .announcement-form {
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        form input[type="text"], form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        form button:hover {
+            background-color: #45a049;
+        }
+
+        .btn {
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Style for flash messages */
+        .flash-messages ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+            color: red;
+        }
+
+        .flash-messages ul li {
+            background-color: #ffdddd;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .timestamp {
+            float: right;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        <h1>Welcome, {{ session['username'] }}!</h1>
+        <p>You're logged in as {{ session['apartment_number'] }}</p>
+
+        <!-- Display Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Notices & Announcements Section -->
+        <div class="announcements-container">
+            <h2>Notice Board</h2>
+            <div id="announcements-list">
+                {% for announcement in admin_announcements %}
+                    <div class="announcement">
+                        <span class="timestamp">{{ announcement.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                        <strong><p>{{ announcement.content }}</p></strong>
+                        
+                        {% if announcement.image_path %}
+                            <div class="image-container">
+                                <img src="{{ url_for('static', filename='uploads/' + announcement.image_path.split('/')[-1]) }}" 
+                                     alt="Announcement Image">
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Form to make an announcement -->
+            {% if show_form %}
+                <div class="announcement-form">
+                    <form method="POST" action="/make_announcement">
+                        <label for="apartment-number">Apartment Number:</label>
+                        <input type="text" id="apartment-number" name="apartment_number" required><br>
+
+                        <label for="content">Content:</label>
+                        <textarea id="content" name="content" required></textarea><br>
+
+                        <input type="hidden" name="timestamp" value="{{ timestamp }}">
+
+                        <button type="submit">Submit Announcement</button>
+                        <a href="/home" class="btn">Cancel</a>
+                    </form>
+                </div>
+            {% else %}
+                <a href="/make_announcements" class="btn">Make an Announcement</a>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
