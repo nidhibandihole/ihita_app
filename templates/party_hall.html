@@ -102,6 +102,86 @@
             border-radius: 4px;
             margin-bottom: 5px;
         }
+
+@media screen and (max-width: 1024px) {
+    .container {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    table th, table td {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Phones (width up to 600px) */
+@media screen and (max-width: 1000px) {
+    .container {
+        width: 95%;
+        margin: 10px auto;
+    }
+
+    h1, h2 {
+        font-size: 28px;
+    }
+
+    form, .booking-log {
+        padding: 15px;
+    }
+
+    label, input, textarea, .radio-group label {
+        font-size: 20px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+        padding: 8px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: #fefefe;
+    }
+
+    td {
+        padding: 5px 10px;
+        text-align: left;
+        position: relative;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+        color: #555;
+    }
+}
+
     </style>
 </head>
 <body>

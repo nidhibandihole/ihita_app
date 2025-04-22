@@ -186,6 +186,94 @@
             text-align: center;
         }
     }
+    @media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+    }
+
+    label, input, textarea, button {
+        font-size: 0.9em;
+    }
+
+    .suggestion-box,
+    form {
+        padding: 15px;
+    }
+
+    .table-header {
+        font-size: 1em;
+    }
+
+    .submissions-table th,
+    .submissions-table td {
+        font-size: 0.85em;
+        padding: 8px;
+    }
+
+    .suggestion-image {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    .delete-btn {
+        padding: 4px 8px;
+        font-size: 0.7em;
+    }
+
+    .content-cell {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 500px) {
+    .submissions-table, 
+    .submissions-table thead, 
+    .submissions-table tbody, 
+    .submissions-table th, 
+    .submissions-table td, 
+    .submissions-table tr {
+        display: block;
+        width: 100%;
+    }
+
+    .submissions-table thead {
+        display: none;
+    }
+
+    .submissions-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    .submissions-table td {
+        text-align: right;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    .submissions-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-left: 5px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .suggestion-image {
+        margin: 10px auto;
+    }
+}
+
         
     </style>
 </head>
@@ -235,10 +323,10 @@
                 <tbody>
                     {% for suggestion in suggestions %}
                     <tr>
-                        <td>{{ suggestion.apartment_number }}</td>
-                        <td>{{ suggestion.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
-                        <td class="content-cell">{{ suggestion.content }}</td>
-                        <td class="image-cell">
+                        <td data-label="Apartment #">{{ suggestion.apartment_number }}</td>
+                        <td data-label="Date Submitted">{{ suggestion.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td data-label="Suggestion" class="content-cell">{{ suggestion.content }}</td>
+                        <td data-label="Image" class="image-cell">
                             {% if suggestion.image_path %}
                                 <img src="{{ url_for('static', filename=suggestion.image_path.split('static/')[1]) }}" 
                                      class="suggestion-image" 
@@ -247,7 +335,7 @@
                                 No image
                             {% endif %}
                         </td>
-                        <td>
+                        <td data-label="Actions">
                             {% if is_admin %}
                             <form method="POST" action="{{ url_for('make_suggestion') }}">
                                 <input type="hidden" name="delete_id" value="{{ suggestion.id }}">
@@ -259,6 +347,7 @@
                             {% endif %}
                         </td>
                     </tr>
+                    
                     {% else %}
                     <tr>
                         <td colspan="5" style="text-align: center;">No suggestions yet</td>
