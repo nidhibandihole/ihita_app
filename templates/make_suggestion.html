@@ -152,10 +152,53 @@
         .image-cell {
             text-align: center;
         }
+        @media (max-width: 500px) {
+        .menu-toggle {
+            display: block;
+        }
+    
+        .nav-links {
+            flex-direction: column;
+            width: 100%;
+            display: none; /* hide by default */
+            gap: 0;
+            margin-top: 10px;
+        }
+    
+        .nav-links.show {
+            display: flex;
+        }
+    
+        .nav-links a {
+            padding: 12px 20px;
+            width: 100%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    
+        .right {
+            width: 100%;
+            justify-content: center;
+            margin-top: 10px;
+        }
+    
+        .logout-btn {
+            width: 90%;
+            text-align: center;
+        }
+    }
+        
     </style>
 </head>
-<body>
-    {% include 'navbar.html' %}
+{% extends 'navbar.html' %}
+
+{% block title %}Make a Suggestion{% endblock %}
+
+{% block navbar %}
+    {{ super() }}
+    <li><a href="/suggestions">Suggestions</a></li>
+{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Suggestion Box</h1>
 
@@ -168,7 +211,7 @@
         {% endwith %}
 
         <form method="POST" enctype="multipart/form-data">
-            <label for="content">Suggestion:</label>
+            <label for="content">Suggestion/Concerns:</label>
             <textarea id="content" name="content" rows="4" required></textarea>
 
             <label for="image">Upload Image (optional):</label>
@@ -225,5 +268,9 @@
             </table>
         </div>
     </div>
-</body>
-</html>
+{% endblock %}
+
+{% block footer %}
+    {{ super() }}
+    <p>Additional footer content for suggestions page.</p>
+{% endblock %}
