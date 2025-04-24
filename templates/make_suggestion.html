@@ -283,12 +283,12 @@
 
 {% block navbar %}
     {{ super() }}
-    <li><a href="/suggestions">Suggestions</a></li>
+    <li><a href="/suggestions">Suggestions/Concerns</a></li>
 {% endblock %}
 
 {% block content %}
     <div class="container">
-        <h1>Suggestion Box</h1>
+        <h1>Suggestions/Concerns</h1>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
