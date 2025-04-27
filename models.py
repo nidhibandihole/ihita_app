@@ -1,7 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime ,timedelta
 
 db = SQLAlchemy()  # Single instance
+
+def current_ist_time():
+    return datetime.utcnow() + timedelta(hours=5, minutes=30)
 
 # User model
 class User(db.Model):
@@ -19,7 +22,8 @@ class Announcement(db.Model):
     moving_date = db.Column(db.Date, nullable=False)
     dues_clear = db.Column(db.String(20), nullable=False)  # "Cleared" or "Pending"
     comments = db.Column(db.Text, nullable=True)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=current_ist_time)
+
 
 # PartyHallBooking model
 class PartyHallBooking(db.Model):
@@ -37,7 +41,7 @@ class AdminAnnouncement(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     apartment_number = db.Column(db.String(10), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=current_ist_time)
     image_path = db.Column(db.String(255))
 
 # Suggestion model
@@ -45,7 +49,7 @@ class Suggestion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     apartment_number = db.Column(db.String(50), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=current_ist_time)
     image_path = db.Column(db.String(255))  # Optional image path
 
     # Staff Contact Details model
@@ -126,6 +130,8 @@ def is_date_booked(date):
 def get_moving_details_by_apartment(apartment_number):
     return Announcement.query.filter_by(apartment_number=apartment_number).order_by(Announcement.timestamp.desc()).all()
 
+def get_all_moving_details():
+    return Announcement.query.order_by(Announcement.timestamp.desc()).all()
 # Get moving details by move type
 def get_moving_details_by_move_type(move_type):
     return Announcement.query.filter_by(move_type=move_type).order_by(Announcement.timestamp.desc()).all()
