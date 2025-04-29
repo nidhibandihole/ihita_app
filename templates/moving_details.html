@@ -190,7 +190,7 @@
                     <td>{{ detail.comments or 'N/A' }}</td>
                     <td>{{ detail.timestamp.strftime('%d-%m-%Y %H:%M:%S') }}</td>
                     <td>
-                        {% if detail.apartment_number == session['apartment_number'] %}
+                        {% if detail.apartment_number == session['apartment_number'] or detail.username == 'admin' %}
                             <a href="{{ url_for('edit_moving_details', announcement_id=detail.id) }}" class="btn btn-edit">Edit</a>
                             <a href="{{ url_for('delete_moving_details', announcement_id=detail.id) }}" class="btn btn-delete">Delete</a>
                         {% endif %}
