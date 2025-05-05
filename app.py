@@ -348,7 +348,7 @@ def edit_moving_details(announcement_id):
     moving_detail = Announcement.query.get_or_404(announcement_id)
 
     # Check if the logged-in user is the owner of the moving details
-    if moving_detail.apartment_number != session['apartment_number']:
+    if moving_detail.apartment_number != session['apartment_number'] or moving_detail.apartment_number != '000':
         flash("You can only edit your own moving details.")
         return redirect(url_for('moving_details'))
 
@@ -376,7 +376,7 @@ def delete_moving_details(announcement_id):
     moving_detail = Announcement.query.get_or_404(announcement_id)
 
     # Check if the logged-in user is the owner of the moving details
-    if moving_detail.apartment_number != session['apartment_number']:
+    if moving_detail.apartment_number != session['apartment_number'] or moving_detail.apartment_number != '000':
         flash("You can only delete your own moving details.")
         return redirect(url_for('moving_details'))
 
