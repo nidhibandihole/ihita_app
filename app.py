@@ -18,7 +18,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv("SECRET_KEY")
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("SQLALCHEMY_DATABASE_URI")
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://3v5cUKca8NJCP7r.root:I6l7xbsgvFbsqUYZ@gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/test?ssl_ca=C:\\Users\\nidhi\\OneDrive\\Documents\\projs\\ihita_app\\isrgrootx1.pem.txt&ssl_verify_cert=true&ssl_verify_identity=true'
+app.config['SQLALCHEMY_DATABASE_URI'] = f''
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Bind SQLAlchemy to app
